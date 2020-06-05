@@ -1,0 +1,8 @@
+{
+  "files.autoSave": "onFocusChange",
+  "files.autoSaveDelay": 100,
+  "emmet.extensionsPath": "",
+  "files.associations": {
+    "*.js": "javascriptreact"
+  }
+}
