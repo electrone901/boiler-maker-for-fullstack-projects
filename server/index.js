@@ -5,12 +5,13 @@ const app = express();
 module.exports = app;
 
 app.use(volleyball);
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+const bodyParser = require('body-parser');
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
 // Routes
-// app.use
+app.use('/api/', require('./routes')); // matches all requests to /api
 
 // handles any none existing files  that bypass express.static
 app.use((req, res, next) => {
@@ -21,14 +22,14 @@ app.use((req, res, next) => {
   }
 });
 
-//serves up entry react index file
-app.get('/', (req, res, next) => {
-  res.sendFile(path.join(__dirname, '..', 'client', 'index.html'));
-});
-
 // ERROR CATCHING HANDLING: SERVER
 app.use((err, req, res, next) => {
   console.error(err, typeof next);
   console.error(err.stack);
   res.status(err.status || 500).send(err.message || 'Internal server error.');
+});
+
+//serves up entry react index file
+app.get('*', (req, res, next) => {
+  res.sendFile(path.join(__dirname, '..', 'client', 'index.html'));
 });
