@@ -10,6 +10,25 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
+const session = require('express-session');
+const SequelizeStore = require('connect-session-sequelize')(session.Store);
+const dbStore = new SequelizeStore({ db: db });
+const passport = require('passport');
+
+// Session middleware
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET || 'This is not very secure',
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
+
+// authentication router
+app.use('/auth', require('./auth'));
+
 // Routes
 app.use('/api/', require('./routes')); // matches all requests to /api
 
