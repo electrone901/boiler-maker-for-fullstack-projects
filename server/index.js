@@ -10,10 +10,17 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
+const passport = require('passport');
+
+// session and sessionDB config
 const session = require('express-session');
+const db = require('./database/database');
+
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
 const dbStore = new SequelizeStore({ db: db });
-const passport = require('passport');
+
+// sync so that our session table gets created
+dbStore.sync();
 
 // Session middleware
 app.use(
@@ -23,11 +30,12 @@ app.use(
     saveUninitialized: false,
   })
 );
+
 app.use(passport.initialize());
 app.use(passport.session());
 
 // authentication router
-app.use('/auth', require('./auth'));
+app.use('/api', require('./auth'));
 
 // Routes
 app.use('/api/', require('./routes')); // matches all requests to /api
