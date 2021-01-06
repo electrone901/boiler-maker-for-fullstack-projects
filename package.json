@@ -21,7 +21,7 @@
         "lodash": "^4.17.15",
         "pg-hstore": "^2.3.3",
         "volleyball": "^1.5.1",
-        "axios": "^0.18.0",
+        "axios": "^0.21.1",
         "body-parser": "^1.18.2",
         "chalk": "^2.4.1",
         "express": "^4.14.0",
